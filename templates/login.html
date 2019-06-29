@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+{% block content %}
+	{% if not is_login %}
+		<form action="" method="post">
+				<!-- <p><input type=text name=username></p> -->
+				<p><input type=email name=email placeholder="info@sample.com"></p>
+				<p><input type=password password=password></p>
+				<p><input type=submit value=Login></p>
+		</form>
+	{% elif is_login %}
+		<p>ログイン済みです{{ name }}さん。</p>
+	{% endif %}
+{% endblock %}
