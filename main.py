@@ -7,6 +7,7 @@ from flask_bcrypt import Bcrypt
 from datetime import datetime
 from hashids import Hashids
 import random
+import os
 
 app = Flask(__name__)
 app.secret_key = 'sAec%mSWcFpt-6zwBHMPXZMLnx7t8fNeD4Kn/DZT' #ソルト
