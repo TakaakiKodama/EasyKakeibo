@@ -11,7 +11,7 @@ import random
 app = Flask(__name__)
 app.secret_key = 'sAec%mSWcFpt-6zwBHMPXZMLnx7t8fNeD4Kn/DZT' #ソルト
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://127.0.0.1:5432/app'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ndgkvdnytotvjj:14138a0daf00692743c79a8ddf23ee6708682683ee8900ea4113bc7b7ea00845@ec2-23-21-109-177.compute-1.amazonaws.com:5432/d3p37prko6hm72'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
