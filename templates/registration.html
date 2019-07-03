@@ -1,16 +1,13 @@
 {% extends "template.html" %}
 {% block content %}
+	<h1>登録ページ</h1>
+	<div>
 		<form action="" method="post">
 				<p>email<input type=email name=email placeholder="info@sample.com"></p>
 				<p>password<input type=password name=password minlength="8"></p>
 				<p><input type=submit value="登録"></p>
 		</form>
-		<p></p>
-		<div>
-			<p>status</p>
-			<ul>
-				<li>{{email}}</li>
-				<li>{{password}}</li>
-			</ul>
-		</div>
+	</div>
+
+
 {% endblock %}

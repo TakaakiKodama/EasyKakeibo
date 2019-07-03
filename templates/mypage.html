@@ -1,0 +1,20 @@
+{% extends "template.html" %}
+{% block content %}
+	<h1>{{email}}さんのマイページ</h1>
+	<div>
+		<p>家計簿を編集する</p>
+		<ul>
+			{% for book in booklist%}
+			<li><a href="/book/{{book.book_id}}">{{book.book_name}}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div>
+		<p>家計簿を追加する</p>
+		<form action="" method="post">
+			<p><input type="text" minlength="3" maxlength="20" name="bookname" ></p>
+			<p><input type=submit value="新しい家計簿を作る"></p>
+		</form>
+	</div>
+
+{% endblock %}
