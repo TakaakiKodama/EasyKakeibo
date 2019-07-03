@@ -1,4 +1,4 @@
 # initializeDB.py
-from main import app_init
+from main import db
 
-app_init()
+db.create_all()
