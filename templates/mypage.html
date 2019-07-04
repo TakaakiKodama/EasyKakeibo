@@ -1,20 +1,25 @@
 {% extends "template.html" %}
 {% block content %}
-	<h1>{{email}}さんのマイページ</h1>
-	<div>
-		<p>家計簿を編集する</p>
-		<ul>
-			{% for book in booklist%}
-			<li><a href="/book/{{book.book_id}}">{{book.book_name}}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
-	<div>
-		<p>家計簿を追加する</p>
+	<div class="mypage content_box">
+		{%if booklist != [] %}
+		<div class="ttl">家計簿を編集する</div>
+		{% for book in booklist%}
+		<div class="mypage-container">
+			<a class="mypage-button orange" href="/book/{{book.book_id}}">
+				<span>
+				<i class="fas fa-check"></i>
+			</span>{{book.book_name}}</a>
+		</div>
+		{% endfor %}
+		{%endif%}
+		<div class="ttl">新しい家計簿を作る</div>
 		<form action="" method="post">
-			<p><input type="text" minlength="3" maxlength="20" name="bookname" ></p>
-			<p><input type=submit value="新しい家計簿を作る"></p>
+		<div class="make">
+			<p><input required type="text" minlength="3" maxlength="20" name="bookname" placeholder="bookname..."></p>
+			<p><input  class="make-button" type=submit value="作る"></p>
+			</div>
 		</form>
+
 	</div>
 
 {% endblock %}

@@ -6,21 +6,30 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="/static/css/recet.css">
 	<link rel="stylesheet" href="/static/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
 	<title>{{ title }}</title>
 </head>
 <body>
-{% block content %}
-<!-- ここにメインコンテンツを書く -->
-{% endblock %}
-<div>
-	<p>ナビゲーション</p>
-	<ul>
-		<li><a href="/">top</a></li>
-		<li><a href="/login">ログイン</a></li>
-		<li><a href="/logout">ログアウト</a></li>
-		<li><a href="/registration">登録</a></li>
-		<li><a href="/mypage">マイページ</a></li>
-	</ul>
-</div>
+	<div class="header">
+		<nav class="nav">
+			<a href="/" class="topicon"><span>E</span></a>
+			<a href="/logout" class="Logouticon"><span><i class="fas fa-sign-out-alt"></i></span></a>
+			<a href="/mypage" class="Logouticon"><span><i class="fas fa-user"></i></span></a>
+		</nav>
+
+		<div><h1>{{page_title}}</h1></div>
+	</div>
+	<div class="main_contents">
+		<div class="container">
+		<div class="garden">
+		{% block content %}
+		{% endblock %}
+	</div>
+		</div>
+
+
+	</div>
+
 </body>
 </html>

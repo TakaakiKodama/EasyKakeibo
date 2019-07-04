@@ -1,168 +1,276 @@
 {% extends "template.html" %}
 {% block content %}
-	<div style="border:solid 1px">
-		<p>追加する</p>
-		<form action="" method="post">
-			<input type="hidden" value="{{book_id}}" name=book_id>
-			<table>
-				<tr>
-					<th>購入日</th>
-					<td><input type="date" name=date></td>
-				</tr>
-				<tr>
-					<th>費目</th>
-					<td><input type="text" list="category_list" name=category></td>
-				</tr>
-				<tr>
-					<th>買ったもの</th>
-					<td><input type="text" name="recode_name"></td>
-				</tr>
-				<tr>
-					<th>値段</th>
-					<td><input type="number" name="price"></td>
-				</tr>
-			</table>
-			<input type=submit value=追加 name="add">
-			<datalist id="category_list">
-				{%for name in categories%}
-					<option value="{{name.category_name}}"></option>
-				{%endfor%}
-			</datalist>
-		</form>
-		</div>
-		<div style="border:solid 1px">
-		<p>過去の入力を編集する</p>
-		<form action="" method="post">
-			<input type="date" name=date>
-			<input type="submit" name="get_recode_by_date_foredit" value="表示する">
-		</form>
-		{% for recode in bydate%}
-		<details>
-			<summary>{{recode.recode_name}}({{recode.category_name}})</summary>
+	{% if permission <= 2%}
+		<!-- 追加 -->
+		<div class="add_recode content_box">
+			<div class="ttl">追加</div>
 			<form action="" method="post">
-			<input type="hidden" value="{{recode.registory_id}}" name=registory_id>
-			<table>
-				<tr>
-					<th>購入日</th>
-					<td><input type="date" name=date value='{{recode.date}}'></td>
-				</tr>
-				<tr>
-					<th>費目</th>
-					<td><input type="text" name="category" list="category_list" value='{{recode.category_name}}'></td>
-				</tr>
-				<tr>
-					<th>買ったもの</th>
-					<td><input type="text" name="recode_name" value='{{recode.recode_name}}'></td>
-				</tr>
-				<tr>
-					<th>値段</th>
-					<td><input type="number" name="price" value='{{recode.price}}'></td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="change" value="変更"></td>
-					<td><input type="submit" name="delete" value="削除"></td>
-				</tr>
+				<input type="hidden" value="{{book_id}}" name=book_id>
+				<div class="recode_table_container">
+				<table class="recode_table">
+					<tr>
+						<th>購入日</th>
+						<td><input required type="date" name=date></td>
+					</tr>
+					<tr>
+						<th>費目</th>
+						<td><input required type="text" list="category_list" name=category></td>
+					</tr>
+					<tr>
+						<th>買ったもの</th>
+						<td><input required type="text" name="recode_name"></td>
+					</tr>
+					<tr>
+						<th>値段</th>
+						<td><input required type="number" name="price"></td>
+					</tr>
 				</table>
+					<input class="recode_table_submit" type=submit value=追加 name="add">
+				</div>
 				<datalist id="category_list">
 					{%for name in categories%}
 						<option value="{{name.category_name}}"></option>
 					{%endfor%}
 				</datalist>
 			</form>
+		</div>
+	{%endif%}
+		<div class="statistics content_box">
+			<div class="ttl">統計</div>
+			<details{%if res!={}%} open{%endif%}>
+				<summary>日次集計</summary>
+				<form action="" method="post">
+					<input required type="date" name=date>
+					<input required type="submit" name="get_recode_by_date_fordaily" value="表示する">
+				</form>
+			</details>
+			<details>
+				<summary>詳細集計</summary>
+				<form action="" method="post">
+					<table class="inputs_row">
+						<tr>
+							<th>集計開始日</th>
+							<th>終了日</th>
+							<th>集計費目</th>
+						</tr>
+						<tr>
+							<td><input required type="date" name=datefrom></td>
+							<td><input required type="date" name=dateto></td>
+							<td><select name=selected_category>
+								<option value="all" selected>すべて</option>
+							{%for name in categories%}
+								<option value="{{name.category_name}}">{{name.category_name}}</option>
+							{%endfor%}
+							</select></td>
+						</tr>
+
+					</table>
+					<div class="inputs_row">
+					<input type="submit" name="get_recode_by_date_forspan" value="表示する">
+					</div>
+				</form>
+			</details>
+			<!-- {{chart_type}} -->
+			{%if chart_type == "pie"%}
+			<div class="chart-container" style="position: relative; width:360px; height:360px">
+			<canvas id="myChart"></canvas>
+			</div>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+			<script>
+			var ctx = document.getElementById("myChart");
+			var myPieChart = new Chart(ctx, {
+				type: "{{chart_type}}",
+				data: {
+					labels: [{% for item in res.keys() %}
+					"{{item}}",
+					{% endfor %}],
+					datasets: [{
+							backgroundColor: [{% for item in colors %}
+							"{{item}}",
+							{% endfor %}],
+							data: [{% for item in res.values() %}
+							"{{item}}",
+							{% endfor %}],
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						text: "{{span}}"
+					},
+					maintainAspectRatio: false,
+				}
+			});
+			</script>
+			{%endif%}
+			{%if chart_type == "bar"%}
+			<div class="chart-container" style="position: relative; width:360px; height:360px">
+		  <canvas id="myLineChart"></canvas>
+			</div>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+		  <script>
+		  var ctx = document.getElementById("myLineChart");
+		  var myLineChart = new Chart(ctx, {
+		    type: 'bar',
+		    data: {
+		      labels: [{% for item in res.keys() %}
+					"{{item}}",
+					{% endfor %}],
+		      datasets: [
+		        {
+		          label: "{{request.form['selected_category']}}",
+		          data: [{% for item in res.values() %}
+							"{{item}}",
+							{% endfor %}],
+		          borderColor: "{{colors}}",
+		          backgroundColor: "{{colors}}"
+		        }
+		      ],
+		    },
+		    options: {
+		      title: {
+		        display: true,
+		        text: "{{span}}"
+		      },
+					maintainAspectRatio: false,
+		    }
+		  });
+		  </script>
+			{%endif%}
+			{%if forchart != []%}
+			<div class="ttl">総額¥{{sumup}}</div>
+	<details>
+		<summary>内訳</summary>
+					<div class="inputs_row">
+
+				<table style="border-collapse: separate;border-spacing:10px;">
+					<tr>
+						<th>支払日</th>
+						<th>買ったもの</th>
+						<th>値段</th>
+					</tr>
+					{% for recode in forchart%}
+					<tr>
+						<td style="margin:5px;">{{recode.date}}</td>
+						<td>{{recode.recode_name}}</td>
+						<td>{{recode.price}}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+	</details>
+
+			{%endif%}
+		</div>
+	{% if permission <= 2%}
+	<div class="edit_recode content_box">
+		<div class="ttl">修正</div>
+		<form action="" method="post">
+			<div class="inputs_row">
+				<input required class="inputs_row_data" type="date" name=date>
+				<input class="inputs_row_comand" type="submit" name="get_recode_by_date_foredit" value="表示する">
+			</div>
+
+		</form>
+		{% for recode in bydate%}
+		<details>
+			<summary>{{recode.recode_name}}({{recode.category_name}})</summary>
+			<form action="" method="post">
+			<div class="recode_table_container">
+			<input type="hidden" value="{{recode.registory_id}}" name=registory_id>
+			<table class="recode_table">
+				<tr>
+					<th>購入日</th>
+					<td><input required type="date" name=date value='{{recode.date}}'></td>
+				</tr>
+				<tr>
+					<th>費目</th>
+					<td><input required type="text" name="category" list="category_list" value='{{recode.category_name}}'></td>
+				</tr>
+				<tr>
+					<th>買ったもの</th>
+					<td><input required type="text" name="recode_name" value='{{recode.recode_name}}'></td>
+				</tr>
+				<tr>
+					<th>値段</th>
+					<td><input required type="number" name="price" value='{{recode.price}}'></td>
+				</tr>
+				</table>
+				<div class="recode_table_submit_change">
+					<input type="submit" name="change" value="変更">
+					<input type="submit" name="delete" value="削除">
+				</div>
+
+				<datalist id="category_list">
+					{%for name in categories%}
+						<option value="{{name.category_name}}"></option>
+					{%endfor%}
+				</datalist>
+				</div>
+			</form>
 		</details>
 		{% endfor %}
 	</div>
-	<div style="border:solid 1px">
-		<p>統計</p>
-		<details{%if res!={}%} open{%endif%}>
-			<summary>日次集計</summary>
-			<form action="" method="post">
-				<input type="date" name=date>
-				<input type="submit" name="get_recode_by_date_fordaily" value="表示する">
-			</form>
-		</details>
-		<details>
-			<summary>期間集計</summary>
-			<form action="" method="post">
-				<input type="date" name=datefrom>
-				<input type="date" name=dateto>
-				<input type="submit" name="get_recode_by_date_forspan" value="表示する">
-			</form>
-		</details>
-		{%if chart_type != "" %}
-		<canvas id="myChart"></canvas>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-		<script>
-		var ctx = document.getElementById("myChart");
-		var myPieChart = new Chart(ctx, {
-			type: "{{chart_type}}",
-			data: {
-				labels: [{% for item in res.keys() %}
-						"{{item}}",
-				{% endfor %}],
-				datasets: [{
-						backgroundColor: [{% for item in colors %}
-								"{{item}}",
-						{% endfor %}],
-						data: [{% for item in res.values() %}
-								"{{item}}",
-						{% endfor %}],
-				}]
-			},
-			options: {
-				title: {
-					display: true,
-					text: "{{span}}"
-				}
-			}
-		});
-		</script>
-		{%endif%}
-		<table>
-			{% for recode in forchart%}
-			<tr>
-				<td>{{recode.date}}</td>
-				<td>{{recode.category_id}}</td>
-				<td>{{recode.recode_name}}</td>
-				<td>{{recode.price}}</td>
-			</tr>
-			{% endfor %}
-		</table>
-	</div>
-	<div style="border:solid 1px">
-		<p>設定</p>
+	{%endif%}
+
+	<div class="setting content_box">
+		<div class="ttl">設定</div>
+		{% if permission <= 2 %}
+		<!-- 費目を編集する -->
 		<details>
 			<summary>費目を編集する</summary>
 			<table>
 				{%for category in categories%}
 				{%if category.category_name != "その他"%}
 					<form action="" method="post">
-						<input type="hidden" value="{{category.id}}" name="category_id">
+						<input  type="hidden" value="{{category.id}}" name="category_id">
 						<tr>
-							<td><input type="text" name="category_name" value="{{category.category_name}}"></td>
-							<td><input type="submit" name="change_category" value="変更"></td>
-							<td><input type="submit" name="delete_category" value="削除"></td>
+							<td><input required type="text" name="category_name" class="inputs_row_data" value="{{category.category_name}}"></td>
+							<td><input class="inputs_row_comand" type="submit" name="change_category" value="変更"></td>
+							<td><input class="inputs_row_comand" type="submit" name="delete_category" value="削除"></td>
 						</tr>
 					</form>
 					{%endif%}
 				{%endfor%}
 			</table>
+		{%endif%}
 		</details>
+		{% if permission == 1 %}
+		<!-- 家計簿の名前を変更する -->
 		<details>
-				<summary>権限を与える</summary>
-				<form action="" method="post">
-					<p><input type=email name=add_person placeholder="info@sample.com"></p>
-					<select name="permission_level">
-						<option value="1">管理者</option>
-						<option value="2">編集者</option>
-						<option value="3">閲覧者</option>
-					</select>
-					<p><input type="submit" name="add_permission" value="権限を与える"></p>
-				</form>
+			<summary>家計簿の名前を変更する</summary>
+			<form action="" method="post">
+				<div class="inputs_row">
+				<p><input required type="text" minlength="3" maxlength="20" name="bookname" ></p>
+				<p><input type=submit name=change_bookname value="家計簿の名前を変更する"></p>
+				</div>
+			</form>
 		</details>
+		{%endif%}
+		{% if permission == 1 %}
+		<!-- 権限を与える -->
+		<details>
+			<summary>権限を与える</summary>
+			<form action="" method="post">
+				<div class="inputs_row">
+				<p><input required type=email name=add_person placeholder="info@sample.com"></p>
+				<select name="permission_level">
+					<option value="1">管理者</option>
+					<option value="2">編集者</option>
+					<option value="3">閲覧者</option>
+				</select>
+				<p><input type="submit" name="add_permission" value="権限を与える"></p>
+				</div>
+			</form>
+		</details>
+		{%endif%}
+		{% if permission == 1 %}
+		<!-- 権限を変更する -->
 		<details>
 			<summary>権限を変更する</summary>
 			<form action="" method="post">
+				<div class="inputs_row">
+
 				<p>
 					<select name="change_person" id="">
 						{%for person in permited_users%}
@@ -172,7 +280,6 @@
 						{%endfor%}
 					</select>
 				</p>
-				<!-- <p><input type=email name=change_email placeholder="info@sample.com"></p> -->
 				<p>
 					<select name="permission_level">
 						<option value="1">管理者</option>
@@ -182,14 +289,21 @@
 					</select>
 				</p>
 				<p><input type="submit" name="change_permission" value="権限を変更する"></p>
+				</div>
 			</form>
 		</details>
+		{%endif%}
+		{% if permission == 1 %}
+		<!-- この家計簿を削除する -->
 		<details>
 			<summary>この家計簿を削除する</summary>
+
 			<form action="" method="post">
+				<div class="inputs_row">
 				<p><input type="submit" name="delete_thisbook" value="この家計簿を削除する"></p>
+			</div>
 			</form>
 		</details>
-
+		{%endif%}
 	</div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "template.html" %}
 {% block content %}
-	<h1>EasyKakeibo</h1>
-	<div>
+	<div class="feature content_box">
+		<div class="ttl">EasyKakeibo??</div>
 		<ul>
 			<li>簡単作成・編集</li>
 			<li>複数の家計簿を管理</li>
@@ -10,11 +10,34 @@
 			<li>グループで編集</li>
 		</ul>
 	</div>
-	<div>
+	<div class="flow content_box">
+		<div class="ttl">How to use??</div>
 		<ul>
 			<li>ユーザー登録</li>
 			<li>家計簿を作成</li>
 			<li>出費を入力</li>
 		</ul>
 	</div>
+	<div class="registory content_box">
+		<div class="reg">
+		<div class="ttl">登録</div>
+		<form action="" method="post">
+				<div class="form">
+				<p><input required type=email name=email placeholder="email@mail.com"></p>
+				<p><input required type=password name=password minlength="8" placeholder="password"></p>
+				<p><input type=submit name=registory value="登録"></p>
+				</div>
+		</form>
+		</div>
+		<div class="log">
+		<div class="ttl">Login</div>
+		<form action="" method="post">
+			<div class="form">
+				<p><input required type=email name=email placeholder="info@sample.com"></p>
+				<p><input required type=password name=password placeholder="password"></p>
+				<p><input type=submit name=login value=Login></p>
+				</div>
+		</form>
+		</div>
+		</div>
 {% endblock %}
