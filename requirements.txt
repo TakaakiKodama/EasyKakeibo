@@ -15,5 +15,6 @@ pycparser==2.19
 pytz==2019.1
 six==1.12.0
 SQLAlchemy==1.3.5
+uuid==1.30
 Werkzeug==0.15.4
 zope.interface==4.6.0
