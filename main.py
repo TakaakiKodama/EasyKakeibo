@@ -79,7 +79,7 @@ def index():
 				session['email'] = email
 				return redirect('/mypage')
 			else:
-				render_template('login.html' )
+				render_template('index.html' )
 	return render_template('index.html', title='EasyKakeibo', page_title="EasyKakeibo" , name=name)
 
 
