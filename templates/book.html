@@ -40,8 +40,11 @@
 			<details{%if res!={}%} open{%endif%}>
 				<summary>日次集計</summary>
 				<form action="" method="post">
-					<input required type="date" name=date>
-					<input required type="submit" name="get_recode_by_date_fordaily" value="表示する">
+					<table class="recode_table">
+						<td><input required type="date" name=date></td>
+						<td><input required type="submit" name="get_recode_by_date_fordaily" value="表示する"></td>
+					</table>
+
 				</form>
 			</details>
 			<details>
