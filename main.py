@@ -15,7 +15,7 @@ import random
 import os
 
 app = Flask(__name__)
-app.secret_key = 'sAec%mSWcFpt-6zwBHMPXZMLnx7t8fNeD4Kn/DZT' #ソルト
+app.secret_key = '' #ソルト　非公開です
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://127.0.0.1:5432/app'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
