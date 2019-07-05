@@ -101,4 +101,5 @@ hr {
 
 input, select {
     vertical-align:middle;
+    -webkit-appearance: none;
 }
