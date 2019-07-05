@@ -41,8 +41,8 @@
 				<summary>日次集計</summary>
 				<form action="" method="post">
 					<table class="recode_table">
-						<td style="width:40%"><input style="width:100%" required type="date" name=date></td>
-						<td style="width:40%"><input style="width:100%" required type="submit" name="get_recode_by_date_fordaily" value="表示する"></td>
+						<td style="width:40%"><input style="width:50%" required type="date" name=date></td>
+						<td style="width:40%"><input style="width:50%" required type="submit" name="get_recode_by_date_fordaily" value="表示する"></td>
 					</table>
 
 				</form>
@@ -57,9 +57,9 @@
 							<th>集計費目</th>
 						</tr>
 						<tr class="recode_table">
-							<td style="width:30%"><input style="width:100%" required type="date" name=datefrom></td>
-							<td style="width:30%"><input style="width:100%" required type="date" name=dateto></td>
-							<td style="width:30%"><select style="width:100%" name=selected_category>
+							<td style="width:30%"><input style="width:50%" required type="date" name=datefrom></td>
+							<td style="width:30%"><input style="width:50%" required type="date" name=dateto></td>
+							<td style="width:30%"><select style="width:50%" name=selected_category>
 								<option value="all" selected>すべて</option>
 							{%for name in categories%}
 								<option value="{{name.category_name}}">{{name.category_name}}</option>
