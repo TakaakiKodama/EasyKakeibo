@@ -25,7 +25,7 @@ users=["test1@test.com","test2@test.com","test3@test.com"]
 for n_user in users:
     you=User()
     you.email=n_user
-    you.password=bcrypt.generate_password_hash(""+app.secret_key).decode('utf-8')
+    you.password=bcrypt.generate_password_hash("password"+app.secret_key).decode('utf-8')
     db.session.add(you)
     db.session.commit()
 
