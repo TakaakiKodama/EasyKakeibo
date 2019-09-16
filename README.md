@@ -6,10 +6,8 @@
 
  id |               book_id                | book_name |     email      | permission
 ----+--------------------------------------+-----------+----------------+------------
-  1 | 5916da9f-c03f-409d-852c-7954171e0b73 | newbook2  | test1@test.com |          1
-  
+  1 | 5916da9f-c03f-409d-852c-7954171e0b73 | newbook2  | test1@test.com |          1 
   2 | 5916da9f-c03f-409d-852c-7954171e0b73 | newbook2  | test2@test.com |          2
-  
   3 | 5916da9f-c03f-409d-852c-7954171e0b73 | newbook2  | test3@test.com |          3
 
 
