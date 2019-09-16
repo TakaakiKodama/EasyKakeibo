@@ -18,7 +18,7 @@ heroku(サーバー)
 postgresql(データベース)
 html
 css
-javascript
+d3.js
 
 
 仕様
